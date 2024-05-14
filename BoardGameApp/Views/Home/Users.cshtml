@@ -1,0 +1,18 @@
+﻿@model List<BoardGameApp.Models.Person>
+@{
+    ViewData["Title"] = "Users";
+    List<Person> people = ViewBag.People;
+}
+
+@if (ViewBag.Name != null)
+{
+    <p>@ViewBag.Name</p>
+}
+
+@if (ViewBag.People != null)
+{
+    @foreach (var p in people)
+    {
+        <p>@p.Name @p.Score</p>
+    }
+}
