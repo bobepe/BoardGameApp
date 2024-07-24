@@ -36,7 +36,7 @@ namespace BoardGameApp.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<PlayPlayer>()
-                .HasKey(pp => new { pp.PlayId, pp.PlayerId, pp.RoleId });
+                .HasKey(pp => new { pp.PlayId, pp.PlayerId }); // pp => new { pp.PlayId, pp.PlayerId, pp.RoleId }
 
             modelBuilder.Entity<PlayPlayer>()
                 .HasOne(pp => pp.Play)
