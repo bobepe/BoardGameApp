@@ -1,7 +1,7 @@
 {
   "name": "Board Game App",
   "short_name": "BGApp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "icons": [
     {
       "src": "images/icon192.png",
@@ -15,7 +15,7 @@
     }
   ],
   "lang": "en-US",
-  "start_url": "/index.html",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "white",
   "theme_color": "#03396C"

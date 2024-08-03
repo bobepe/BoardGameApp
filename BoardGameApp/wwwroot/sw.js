@@ -1,4 +1,4 @@
-var cacheName = 'bg-pwa-v1.0.0';
+var cacheName = 'bg-pwa-v1.0.1';
 var filesToCache = [
     './', // Domovská stránka
     './index.html',
