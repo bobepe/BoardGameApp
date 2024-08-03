@@ -1,0 +1,12 @@
+﻿@model List<BoardGameApp.Models.Game>
+@{
+    ViewData["Title"] = "Hry";
+}
+
+@if (Model != null)
+{
+    @foreach (var game in Model)
+    {
+        <p>@game.Name <a asp-action="Detail" asp-route-id="@game.Id">Zobrazit</a></p>
+    }
+}
