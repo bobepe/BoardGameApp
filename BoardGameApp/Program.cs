@@ -1,4 +1,7 @@
 using BoardGameApp.Data;
+using BoardGameApp.Models;
+using BoardGameApp.Respositories;
+using BoardGameApp.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +11,14 @@ builder.Services.AddControllersWithViews();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<BoardGameContext>(options => options.UseSqlServer(connectionString));
+
+// Registrace repositories a služeb
+builder.Services.AddScoped<IGenericRepository<Game>, GameRepository>();
+builder.Services.AddScoped<PlayRepository>();
+builder.Services.AddScoped<PlayPlayerRepository>();
+builder.Services.AddScoped<PlayerRepository>();
+builder.Services.AddScoped<GameService>();
+builder.Services.AddScoped<FilterService>();
 
 var app = builder.Build();
 

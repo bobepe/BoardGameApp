@@ -1,0 +1,39 @@
+﻿@model BoardGameApp.Models.ViewModels.GameDetailsViewModel
+@{
+    ViewData["Title"] = $"Hra {Model.Game.Name}";
+}
+
+@if (Model != null)
+{
+    <div class="card-container">
+        <div class="bg-card">
+            <p class="card__title">@Model.Game.Name</p>
+            <p><b>Počet her:</b> @Model.Game.Plays.Count</p>
+            @if (Model.Game.HighestScoreWins && Model.BestScore != null)
+            {
+                <p><b>Bodový rekord:</b> @Model.BestScore.Item1.Name @Model.BestScore.Item2 @(Model.BestScore.Item3 != null ? $"({Model.BestScore.Item3.Name})" : "")</p>
+            }
+        </div>
+        <div class="bg-card">
+            @if (Model.LastPlay != null && Model.LastPlayPlayers != null)
+            {
+                <p class="card__title">Poslední hra</p>
+                <p>@Model.LastPlay.Created.ToShortDateString()</p>
+                @foreach (var i in Model.LastPlayPlayers)
+                {
+                    <p>@i.Item1.Name @i.Item2 @(i.Item3 != null ? $"({i.Item3.Name})" : "")</p>
+                }
+            }
+        </div>
+        <div class="bg-card">
+            @if (Model.PlayerWithWins != null)
+            {
+                <p class="card__title">Výherci</p>
+                @foreach (var p in Model.PlayerWithWins)
+                {
+                    <p>@p.Key.Name: @p.Value</p>
+                }
+            }
+        </div>
+    </div>
+}
