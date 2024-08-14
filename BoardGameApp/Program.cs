@@ -16,7 +16,9 @@ builder.Services.AddDbContext<BoardGameContext>(options => options.UseSqlServer(
 builder.Services.AddScoped<IGenericRepository<Game>, GameRepository>();
 builder.Services.AddScoped<PlayRepository>();
 builder.Services.AddScoped<PlayPlayerRepository>();
+builder.Services.AddScoped<PlayerRepository>();
 builder.Services.AddScoped<GameService>();
+builder.Services.AddScoped<FilterService>();
 
 var app = builder.Build();
 
