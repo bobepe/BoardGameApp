@@ -30,5 +30,16 @@ namespace BoardGameApp.Respositories
                 .OrderByDescending(x => x.Created)
                 .FirstOrDefault(x => x.GameId == gameId);
         }
+
+        public IEnumerable<Play> GetPlaysByGameId(int gameId)
+        {
+            return _context.Play
+                .Include(p => p.PlayerPlays)
+                .ThenInclude(pp => pp.Player)
+                .Include(p => p.PlayerPlays)
+                .ThenInclude(pp => pp.Role)
+                .Where(p => p.GameId == gameId)
+                .ToList();
+        }
     }
 }

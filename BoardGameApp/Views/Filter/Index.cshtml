@@ -1,0 +1,36 @@
+﻿@model BoardGameApp.Models.ViewModels.FilterViewModel
+
+@{
+    ViewData["Title"] = "Filter";
+}
+
+<h1>Filter Games</h1>
+
+<form asp-action="Filter" method="post">
+    <div>
+        <label for="players">Select Players:</label>
+        <select id="players" name="SelectedPlayerIds" multiple="multiple" class="form-control">
+            @foreach (var player in Model.Players)
+            {
+                <option value="@player.Id">@player.Name</option>
+            }
+        </select>
+    </div>
+
+    <div>
+        <label for="game">Select Game:</label>
+        <select id="game" name="SelectedGameId" class="form-control">
+            <option value="">-- Select a game --</option>
+            @foreach (var game in Model.Games)
+            {
+                <option value="@game.Id">@game.Name</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+
+<script>
+    // Here you could add JavaScript for autocompletion, e.g. using jQuery UI or other libraries
+</script>
