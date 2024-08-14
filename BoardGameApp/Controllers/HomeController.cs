@@ -28,7 +28,7 @@ namespace BoardGameApp.Controllers
 
         public IActionResult Users()
         {
-            ViewBag.Name = "test";
+            /*ViewBag.Name = "test";
             List<Person> people = _context.Persons.ToList();
             ViewBag.People = people;
 
@@ -114,7 +114,7 @@ namespace BoardGameApp.Controllers
                 {
                     Console.WriteLine($"  Position {position.Key}: {position.Value} times");
                 }
-            }
+            }*/
 
             return View();
         }
