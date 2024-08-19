@@ -7,21 +7,55 @@
     display: flex;
     flex-direction: column;
     gap: .5rem;
+    background-color: #f3f6fb;
+    padding: 1.5rem;
 }
 
 .bg-card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 40%;
+    padding: 1rem;
+    background-color: white;
     border: 0;
     border-radius: 0.5rem;
-    background-color: #0000aa;
-    padding: 1rem;
 }
 
-.card__title {
+.bg-card__header {
+}
+
+.bg-card__header .title {
     font-size: 1.75rem;
     font-weight: 500;
     margin-bottom: .5rem;
 }
 
+.bg-card__body {
+}
+
+.center-txt {
+    display: flex;
+}
+
+.center-txt > p:first-child {
+    min-width: 8rem;
+    max-width: 8rem;
+}
+
+.center-txt--3 > p {
+    min-width: 4rem;
+    max-width: 4rem;
+}
+
 .bg-card p, .bg-card li {
-    color: white;
+    color: black;
+}
+
+/*** TABLE ***/
+.bg-table {
+    width: 100%;
+}
+
+.bg-table td:first-child {
+    width: 75%;
 }

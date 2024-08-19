@@ -6,89 +6,82 @@
 
 @foreach (var game in Model)
 {
-
     <div class="card-container">
         <div class="bg-card">
-            <p class="card__title">@game.Game.Name</p>
-            <p><b>Počet her:</b> @game.Count</p>
-            <p><b>Rekord:</b></p>
-            <ul>
-                @foreach (var best in game.Records)
-                {
-                    <li>@best.Item1.Name: @best.Item2 @(best.Item3 != null ? $"({best.Item3.Name})" : "")</li>
-                }
-            </ul>
-            <p><b>Výherci:</b></p>
-            <ul>
-                @foreach (var best in game.Winners)
-                {
-                    <li>@best.Item1.Name: @best.Item2</li>
-                }
-            </ul>
-            @if (game.TopRoles != null && game.TopRoles.Count > 0)
-            {
-                <p><b>Role:</b></p>
-                <ul>
-                    @foreach (var top in game.TopRoles)
+            <div class="bg-card__header">
+                <p class="title">@game.Game.Name</p>
+            </div>
+            <div class="bg-card__body">
+                <div class="center-txt">
+                    <p>Počet her</p><p>@game.Count</p>
+                </div>
+                <div class="center-txt">
+                    <p>Rekord</p>
+                    <p>
+                    @if (game.Records != null && game.Records.Count > 0)
                     {
-                        <p>@top.Key.Name</p>
-                        if (top.Value != null && top.Value.Count > 0)
+                        @game.Records[0].Item2
+
+                        <span>(</span>
+
+                        @for(int i = 0; i < game.Records.Count; i++)
                         {
-                            foreach (var i in top.Value)
+                            @game.Records[i].Item1.Name
+                            @if (@game.Records[i].Item3 != null)
                             {
-                                <ul>
-                                    <p>@(@i.Item1 != null ? $"({i.Item1.Name})" : "-- unknown --")</p>
-                                    <li>počet her: @i.Item2</li>
-                                    <li>Výhry: @i.Item3</li>
-                                </ul>
+                                <span> - </span> @game.Records[i].Item3.Name
+                            }
+                            @if (i < game.Records.Count - 1)
+                            {
+                                <span>, </span>
                             }
                         }
+                        <span>)</span>
                     }
-                </ul>
-            }
+                    </p>
+                </div>
+            </div>
         </div>
-    </div>
-
-    @* <h1>@game.Game.Name</h1>
-    <p>Počet her: @game.Count</p>
-
-    <h2>Výherci</h2>
-    <ul>
-        @foreach (var best in game.Winners)
+        <div class="bg-card">
+            <div class="bg-card__header">
+                <p class="title">Výherci</p>
+            </div>
+            <div class="bg-card__body">
+                @foreach (var best in game.Winners)
+                {
+                    <div class="center-txt">
+                        <p>@best.Item1.Name</p><p>@best.Item2</p>
+                    </div>
+                }
+            </div>
+        </div>
+        @if (game.TopRoles != null && game.TopRoles.Count > 0)
         {
-            <li>@best.Item1.Name: @best.Item2</li>
-        }
-    </ul>
-
-    <h2>Rekord</h2>
-    <ul>
-        @foreach (var best in game.Records)
-        {
-            <li>@best.Item1.Name: @best.Item2 @(best.Item3 != null ? $"({best.Item3.Name})" : "")</li>
-        }
-    </ul> *@
-
-    @* @if (game.TopRoles != null && game.TopRoles.Count > 0)
-    {
-        <h2>Top role</h2>
-        <ul>
             @foreach (var top in game.TopRoles)
             {
-                <h3>@top.Key.Name</h3>
-                if (top.Value != null && top.Value.Count > 0)
-                {
-                    foreach (var i in top.Value)
-                    {
-                        <ul>
-                            <b>@(@i.Item1 != null ? $"({i.Item1.Name})" : "-- unknown --")</b>
-                            <li>počet her: @i.Item2</li>
-                            <li>Výhry: @i.Item3</li>
-                        </ul>
-                    }
-                }
+                <div class="bg-card">
+                    <div class="bg-card__header">
+                        <p class="title">Role - @top.Key.Name</p>
+                    </div>
+                    <div class="bg-card__body">
+                        @if (top.Value != null && top.Value.Count > 0)
+                        {
+                            <table class="bg-table">
+                                @foreach (var i in top.Value)
+                                {
+                                    <tr>
+                                        <td>@(@i.Item1 != null ? $"{i.Item1.Name}" : "-- unknown --")</td>
+                                        <td>@i.Item2</td>
+                                        <td>@i.Item3</td>
+                                    </tr>
+                                }
+                            </table>
+                        }
+                    </div>
+                </div>
             }
-        </ul>
-    } *@
+        }
+    </div>
 
     <hr />
 }
