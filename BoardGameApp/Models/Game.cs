@@ -18,6 +18,7 @@ namespace BoardGameApp.Models
     public enum GameType
     {
         Normal,
-        Party
+        Party,
+        Campaign
     }
 }
