@@ -4,6 +4,8 @@ using BoardGameApp.Models.ViewModels;
 using BoardGameApp.Respositories;
 using BoardGameApp.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.Text.Json;
 
 namespace BoardGameApp.Controllers
 {
@@ -37,6 +39,10 @@ namespace BoardGameApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Filter(FilterViewModel viewModel)
         {
+            viewModel.SelectedPlayerIds = GetIds();
+            if (viewModel.SelectedPlayerIds.Count > 0)
+                HttpContext.Session.Clear();
+
             if (!viewModel.SelectedPlayerIds.Any())
             {
                 ModelState.AddModelError(string.Empty, "You need to select at least one player.");
@@ -52,6 +58,39 @@ namespace BoardGameApp.Controllers
             var result = _filterService.GetFilteredGameDetails(viewModel.SelectedPlayerIds, viewModel.SelectedGameId);
 
             return View("FilterResults", result);
+        }
+
+        [HttpPost]
+        public JsonResult AddPlayer(int selectedValue, string selectedText)
+        {
+            List<int> Ids = GetIds();
+            Ids.Add(selectedValue);
+            HttpContext.Session.SetString("selectedPlayers", JsonSerializer.Serialize(Ids));
+
+            return Json(new { success = true, message = selectedText });
+        }
+
+        [HttpPost]
+        public JsonResult RemovePlayer(int selectedValue)
+        {
+            List<int> Ids = GetIds();
+            int index = Ids.IndexOf(selectedValue);
+            Ids.RemoveAt(index);
+            HttpContext.Session.SetString("selectedPlayers", JsonSerializer.Serialize(Ids));
+
+            return Json(new { success = true, message = "removed" });
+        }
+
+        private List<int> GetIds()
+        {
+            List<int> Ids = new List<int>();
+            var serializedResult = HttpContext.Session.GetString("selectedPlayers");
+            if (!string.IsNullOrEmpty(serializedResult))
+            {
+                Ids = JsonSerializer.Deserialize<List<int>>(serializedResult);
+            }
+
+            return Ids;
         }
     }
 }
