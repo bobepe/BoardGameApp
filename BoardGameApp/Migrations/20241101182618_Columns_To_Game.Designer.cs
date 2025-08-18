@@ -4,6 +4,7 @@ using BoardGameApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BoardGameApp.Migrations
 {
     [DbContext(typeof(BoardGameContext))]
-    partial class BoardGameContextModelSnapshot : ModelSnapshot
+    [Migration("20241101182618_Columns_To_Game")]
+    partial class Columns_To_Game
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,15 +92,6 @@ namespace BoardGameApp.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("GameId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsOnline")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsSolo")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Time")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

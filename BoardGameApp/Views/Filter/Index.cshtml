@@ -5,22 +5,25 @@
 }
 
 <h1>Filter Games</h1>
-
 <form asp-action="Filter" method="post">
     <div>
-        <label for="players">Select Players:</label>
-        <select id="players" name="SelectedPlayerIds" multiple="multiple" class="form-control">
-            @foreach (var player in Model.Players)
+        <select id="mySelect" class="form-control">
+            <option value="0">-- Vyber hráče --</option>
+            @foreach (var i in Model.Players)
             {
-                <option value="@player.Id">@player.Name</option>
+                <option value="@i.Id">@i.Name</option>
             }
         </select>
     </div>
 
+    <div id="selectedValues" class="tags-container">
+        <!-- Sem budeme přidávat vybrané hodnoty -->
+    </div>
+
     <div>
-        <label for="game">Select Game:</label>
+        <!--<label for="game">Select Game:</label> -->
         <select id="game" name="SelectedGameId" class="form-control">
-            <option value="">-- Select a game --</option>
+            <option value="">-- Vyber hru --</option>
             @foreach (var game in Model.Games)
             {
                 <option value="@game.Id">@game.Name</option>
@@ -28,9 +31,88 @@
         </select>
     </div>
 
-    <button type="submit" class="btn btn-primary">Filter</button>
+    <button type="submit" class="btn btn-primary mt-3">Filter</button>
 </form>
 
-<script>
-    // Here you could add JavaScript for autocompletion, e.g. using jQuery UI or other libraries
-</script>
+<div id="response" style="display: none"></div>
+
+@section Scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Při změně hodnoty v selectu
+            $('#mySelect').change(function () {
+                var selectedValue = $(this).val(); // Získáme hodnotu vybranou v selectu
+                var selectedText = $('#mySelect option:selected').text(); // Získáme text vybrané možnosti
+
+                // Odeslání AJAX požadavku
+                $.ajax({
+                    url: '@Url.Action("AddPlayer", "Filter")', // URL k metodě v kontroleru
+                    type: 'POST',
+                    data: { selectedValue: selectedValue, selectedText: selectedText }, // Data, která posíláme
+                    success: function (response) {
+                        // Pokud je odpověď úspěšná, přidáme nový výběr k již existujícímu textu
+                        if (response.success) {
+                            var currentText = $('#response').html();
+                            // Přidáme nový text, pokud již nějaký existuje
+                            if (currentText) {
+                                $('#response').html(currentText + '<br>' + response.message);
+                            } else {
+                                $('#response').html(response.message);
+                            }
+
+                            // Odstraníme vybranou možnost z selectu
+                            $('#mySelect option[value="' + selectedValue + '"]').remove();
+
+                            // Přidáme tuto hodnotu do seznamu vybraných hodnot
+                            $('#selectedValues').append(
+                                `<div id="selected-${selectedValue}" class="tag-item">
+                                            ${response.message}
+                                            <button class="remove-btn" data-value="${selectedValue}">x</button>
+                                        </div>`
+                            );
+                        } else {
+                            $('#response').html('Došlo k chybě.');
+                        }
+                    },
+                    error: function () {
+                        // Pokud dojde k chybě při volání AJAXu
+                        $('#response').html('Došlo k chybě při volání serveru.');
+                    }
+                });
+            });
+
+            // Funkce pro odstranění položky a vrácení ji zpět do selectu
+            $(document).on('click', '.remove-btn', function () {
+                event.preventDefault(); // Zastaví výchozí akci tlačítka
+                var button = $(this); // Uložíme referenci na tlačítko
+
+                var selectedValue = $(this).data('value');
+                var selectedItemText = $(this).parent().text().replace('x', '').trim();
+
+                $.ajax({
+                    url: '@Url.Action("RemovePlayer", "Filter")', // URL k metodě v kontroleru
+                    type: 'POST',
+                    data: { selectedValue: selectedValue }, // Data, která posíláme
+                    success: function (response) {
+                        // Pokud je odpověď úspěšná, přidáme nový výběr k již existujícímu textu
+                        if (response.success) {
+                            $('#response').html(response.message);
+                            // Přidáme zpět položku do selectu
+                            $('#mySelect').append(`<option value="${selectedValue}">${selectedItemText}</option>`);
+
+                            // Odstraníme tuto položku z vybraných hodnot
+                            button.parent().remove();
+                        } else {
+                            $('#response').html('Došlo k chybě.');
+                        }
+                    },
+                    error: function () {
+                        // Pokud dojde k chybě při volání AJAXu
+                        $('#response').html('Došlo k chybě při volání serveru.');
+                    }
+                });
+            });
+        });
+    </script>
+}
